@@ -14,6 +14,7 @@
 - **搜索过滤** — 实时搜索任务标题、备注和标签
 - **任务详情面板** — 侧滑面板编辑备注、日期、标签等
 - **数据持久化** — 所有数据自动保存到 localStorage，刷新不丢失
+- **数据导入导出** — 支持 JSON / XLS 格式导出备份，导入时自动校验数据完整性
 
 ## 技术栈
 
@@ -25,6 +26,7 @@
 | Zustand | 状态管理 |
 | date-fns | 日期处理 |
 | lucide-react | 图标库 |
+| xlsx (SheetJS) | Excel 导入导出 |
 
 ## 快速开始
 
@@ -70,10 +72,14 @@ local-todo/
     ├── store/
     │   └── useStore.ts       # Zustand 状态管理 + localStorage
     └── components/
-        ├── Sidebar.tsx       # 侧边栏（导航、列表管理）
+        ├── Sidebar.tsx       # 侧边栏（导航、列表管理、导入导出）
         ├── TaskList.tsx      # 任务列表（增删改查、过滤）
         ├── TaskDetail.tsx    # 任务详情面板
-        └── SearchBar.tsx     # 搜索栏
+        ├── SearchBar.tsx     # 搜索栏
+        ├── ExportButton.tsx  # 数据导出（JSON / XLS）
+        └── ImportButton.tsx  # 数据导入（含校验）
+    └── utils/
+        └── importValidator.ts  # 导入数据校验工具
 ```
 
 ## 数据存储
@@ -88,7 +94,7 @@ local-todo/
 }
 ```
 
-> **注意**：清除浏览器数据会丢失所有任务。建议定期导出备份（未来版本会添加导入导出功能）。
+> **注意**：清除浏览器数据会丢失所有任务。建议通过侧边栏的「导出数据」功能定期备份（支持 JSON / XLS 格式），需要恢复时使用「导入数据」功能。
 
 ## 开发
 
