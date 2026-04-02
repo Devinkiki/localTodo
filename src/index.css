@@ -499,11 +499,66 @@ body {
 .task-item {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
   padding: 10px 12px;
   border-radius: 6px;
   cursor: pointer;
   transition: background 0.15s;
+}
+
+/* Drag handle */
+.drag-handle {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px;
+  cursor: grab;
+  color: var(--text-muted);
+  opacity: 0;
+  transition: opacity 0.15s;
+  flex-shrink: 0;
+}
+
+.task-item:hover .drag-handle {
+  opacity: 1;
+}
+
+.drag-handle:active {
+  cursor: grabbing;
+}
+
+/* Dragging state */
+.task-item.dragging {
+  opacity: 0.4;
+  background: var(--hover-bg);
+}
+
+/* Disable text selection during drag to prevent interrupting HTML5 drag */
+.task-item[data-task-id] {
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Drag over target highlight */
+.task-item.drag-over {
+  border-top: 2px solid var(--accent-blue);
+  margin-top: -2px;
+}
+
+/* Group drag-over highlight */
+.task-group.drag-over-group {
+  background: rgba(76, 138, 255, 0.05);
+  border-radius: 8px;
+  outline: 2px dashed var(--accent-blue);
+  outline-offset: -2px;
+}
+
+/* List container drag-over highlight (single list view) */
+.task-list.drag-over-list {
+  background: rgba(76, 138, 255, 0.03);
+  border-radius: 8px;
+  outline: 2px dashed var(--accent-blue);
+  outline-offset: -4px;
 }
 
 .task-item:hover {
@@ -666,6 +721,102 @@ body {
 
 .clear-date-btn:hover {
   background: var(--hover-bg);
+}
+
+/* ===== Task Groups (for myDay / important / all views) ===== */
+.task-group {
+  margin-bottom: 8px;
+}
+
+.task-group-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  margin-top: 8px;
+  margin-bottom: 2px;
+}
+
+.task-group-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.task-group-name {
+  flex: 1;
+}
+
+.task-group-count {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+/* ===== Move Task ===== */
+.move-task-wrapper {
+  position: relative;
+}
+
+.move-task-btn {
+  color: var(--text-muted);
+}
+
+.move-task-btn:hover {
+  color: var(--accent-blue);
+}
+
+.move-task-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  z-index: 50;
+  background: white;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  box-shadow: var(--shadow-md);
+  padding: 4px;
+  min-width: 150px;
+  margin-top: 4px;
+}
+
+.move-task-menu button {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 8px 12px;
+  border: none;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--text-primary);
+  border-radius: 4px;
+  transition: background 0.15s;
+}
+
+.move-task-menu button:hover {
+  background: var(--hover-bg);
+}
+
+.move-list-color {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.move-empty {
+  display: block;
+  padding: 8px 12px;
+  font-size: 13px;
+  color: var(--text-muted);
+  text-align: center;
 }
 
 .add-task {

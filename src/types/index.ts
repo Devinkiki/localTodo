@@ -8,6 +8,7 @@ export interface Task {
   dueDate: string | null; // ISO date string
   listId: string;
   tags: string[];
+  order: number; // 排序权重，数值越小越靠前
   createdAt: string;
   updatedAt: string;
 }

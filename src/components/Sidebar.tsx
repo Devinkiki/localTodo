@@ -43,14 +43,14 @@ export function Sidebar() {
           onClick={() => setFilter('important')}
         >
           <Star size={18} />
-          <span>重要</span>
+          <span>重要待办</span>
         </button>
         <button
           className={`nav-item ${activeFilter === 'all' ? 'active' : ''}`}
           onClick={() => setFilter('all')}
         >
           <CheckCheck size={18} />
-          <span>所有任务</span>
+          <span>所有待办</span>
         </button>
       </div>
 
