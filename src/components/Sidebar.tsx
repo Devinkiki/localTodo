@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import { useStore } from '../store/useStore';
 import { Plus, Star, Calendar, CheckCheck, Trash2 } from 'lucide-react';
+import { ExportButton } from './ExportButton';
+import { ImportButton } from './ImportButton';
 
 const LIST_COLORS = ['#4C8AFF', '#FF6B6B', '#51CF66', '#FFD43B', '#CC5DE8', '#FF922B', '#20C997'];
 
@@ -22,6 +24,10 @@ export function Sidebar() {
     <div className="sidebar">
       <div className="sidebar-header">
         <h2>Local Todo</h2>
+        <div className="header-actions">
+          <ExportButton />
+          <ImportButton />
+        </div>
       </div>
 
       <div className="sidebar-nav">

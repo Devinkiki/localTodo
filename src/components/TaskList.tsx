@@ -1,5 +1,5 @@
 import { useStore } from '../store/useStore';
-import { Star, Calendar } from 'lucide-react';
+import { Star, Calendar, Sun } from 'lucide-react';
 import { useState } from 'react';
 
 export function TaskList() {
@@ -219,9 +219,9 @@ export function TaskList() {
               <button
                 className={`icon-btn ${task.myDay ? 'active' : ''}`}
                 onClick={() => handleToggleMyDay(task.id)}
-                title="添加到我的日程"
+                title={task.myDay ? '从我的一天中移除' : '添加到我的一天'}
               >
-                <span className="my-day-dot" />
+                <Sun size={16} fill={task.myDay ? '#4C8AFF' : 'none'} color="#4C8AFF" />
               </button>
             </div>
           </div>

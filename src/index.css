@@ -59,12 +59,188 @@ body {
 
 .sidebar-header {
   padding: 20px 16px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 }
 
 .sidebar-header h2 {
   font-size: 20px;
   font-weight: 600;
   color: var(--text-primary);
+}
+
+/* ===== Export / Import Buttons ===== */
+.header-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.export-wrapper {
+  position: relative;
+}
+
+.export-btn,
+.import-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border: 1px solid var(--border-color);
+  background: white;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--text-secondary);
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+
+.export-btn:hover,
+.import-btn:hover {
+  background: var(--hover-bg);
+  color: var(--text-primary);
+  border-color: var(--accent-blue);
+}
+
+.export-btn svg,
+.import-btn svg {
+  flex-shrink: 0;
+}
+
+.export-chevron {
+  transition: transform 0.15s;
+}
+
+/* Export dropdown menu */
+.export-menu {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  z-index: 50;
+  background: white;
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  box-shadow: var(--shadow-md);
+  padding: 4px;
+  min-width: 140px;
+}
+
+.export-menu button {
+  display: block;
+  width: 100%;
+  padding: 8px 12px;
+  border: none;
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--text-primary);
+  border-radius: 4px;
+  transition: background 0.15s;
+}
+
+.export-menu button:hover {
+  background: var(--hover-bg);
+}
+
+.export-menu-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+}
+
+/* ===== Import Modal ===== */
+.import-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.import-modal-content {
+  background: white;
+  padding: 24px;
+  border-radius: 12px;
+  box-shadow: var(--shadow-md);
+  width: 420px;
+  max-width: 90vw;
+}
+
+.import-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.import-modal-header h3 {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.import-modal-body {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.import-hint {
+  font-size: 13px;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.import-file-input {
+  width: 100%;
+  padding: 10px;
+  border: 2px dashed var(--border-color);
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.import-file-input:hover {
+  border-color: var(--accent-blue);
+}
+
+.import-loading {
+  text-align: center;
+  font-size: 14px;
+  color: var(--accent-blue);
+  padding: 12px;
+}
+
+/* Import error display */
+.import-errors {
+  background: #fff5f5;
+  border: 1px solid #fed7d7;
+  border-radius: 8px;
+  padding: 12px;
+}
+
+.import-errors-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--accent-red);
+  margin-bottom: 8px;
+}
+
+.import-errors ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.import-errors li {
+  font-size: 13px;
+  color: #c53030;
+  line-height: 1.6;
 }
 
 .sidebar-nav {
