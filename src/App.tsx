@@ -6,7 +6,7 @@ import { SearchBar } from './components/SearchBar';
 import { useStore } from './store/useStore';
 
 function App() {
-  const { activeTaskId, theme, setTheme } = useStore();
+  const { activeTaskId, activeFilter, theme, setTheme } = useStore();
 
   // 监听系统主题变化
   useEffect(() => {
@@ -26,7 +26,9 @@ function App() {
       <Sidebar />
       <div className="main-content">
         <SearchBar />
-        <TaskList />
+        <div key={activeFilter} className="content-wrapper">
+          <TaskList />
+        </div>
       </div>
       {activeTaskId && <TaskDetail />}
     </div>

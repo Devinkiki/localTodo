@@ -64,8 +64,8 @@ export function Sidebar() {
           <span>重要待办</span>
         </button>
         <button
-          className={`nav-item ${activeFilter === 'all' ? 'active' : ''}`}
-          onClick={() => setFilter('all')}
+          className={`nav-item ${activeFilter === 'all' && !activeListId ? 'active' : ''}`}
+          onClick={() => { setFilter('all'); setActiveList(null); }}
         >
           <CheckCheck size={18} />
           <span>所有待办</span>
@@ -97,7 +97,7 @@ export function Sidebar() {
           {lists.map((list) => (
             <div
               key={list.id}
-              className={`list-item-wrapper ${activeListId === list.id && activeFilter === 'all' ? 'active' : ''}`}
+              className={`list-item-wrapper ${activeListId === list.id ? 'active' : ''}`}
             >
               <button
                 className="list-item"
