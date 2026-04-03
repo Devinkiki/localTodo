@@ -63,13 +63,51 @@ export function TaskList() {
     return 'var(--text-secondary)';
   };
 
+  /**
+   * 格式化完成时间（用于已完成任务复盘）
+   * 今天 → "今天 HH:mm"
+   * 昨天 → "昨天 HH:mm"
+   * 本周 → "周X HH:mm"
+   * 更早 → "M月D日"
+   */
+  const getCompletedAtLabel = (updatedAt: string) => {
+    const date = new Date(updatedAt);
+    const now = new Date();
+    const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const yesterday = new Date(today);
+    yesterday.setDate(yesterday.getDate() - 1);
+    const taskDay = new Date(date.getFullYear(), date.getMonth(), date.getDate());
+    const timeStr = date.toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit' });
+
+    if (taskDay.getTime() === today.getTime()) return `今天 ${timeStr}`;
+    if (taskDay.getTime() === yesterday.getTime()) return `昨天 ${timeStr}`;
+    if (taskDay > yesterday) {
+      const weekdays = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
+      return `${weekdays[date.getDay()]} ${timeStr}`;
+    }
+    return date.toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' });
+  };
+
+  /**
+   * 获取任务所属的待办类型名称和颜色
+   */
+  const getTaskListInfo = (task: typeof activeTasks[0]) => {
+    const list = lists.find((l) => l.id === task.listId);
+    return {
+      name: list?.name || '未知类型',
+      color: list?.color || '#999',
+    };
+  };
+
   // Filter tasks
   let filteredTasks = tasks;
 
   if (activeFilter === 'myDay') {
-    filteredTasks = tasks.filter((t) => t.myDay && !t.completed);
+    // 我的一天：包含已完成和未完成的 myDay 任务
+    filteredTasks = tasks.filter((t) => t.myDay);
   } else if (activeFilter === 'important') {
-    filteredTasks = tasks.filter((t) => t.important && !t.completed);
+    // 重要待办：包含已完成和未完成的 important 任务
+    filteredTasks = tasks.filter((t) => t.important);
   } else if (activeFilter === 'all') {
     if (activeListId) {
       filteredTasks = tasks.filter((t) => t.listId === activeListId);
@@ -89,7 +127,10 @@ export function TaskList() {
   }
 
   const activeTasks = filteredTasks.filter((t) => !t.completed);
-  const completedTasks = filteredTasks.filter((t) => t.completed);
+  // 已完成任务按完成时间倒序（最近完成的在上面）
+  const completedTasks = filteredTasks
+    .filter((t) => t.completed)
+    .sort((a, b) => new Date(b.updatedAt).getTime() - new Date(a.updatedAt).getTime());
 
   /**
    * 按列表类别分组任务（仅 myDay / important / 所有待办 视图需要）
@@ -568,7 +609,7 @@ export function TaskList() {
           <button className="task-checkbox" />
           <input
             type="text"
-            placeholder="添加任务"
+            placeholder="添加待办"
             value={newTaskTitle}
             onChange={(e) => setNewTaskTitle(e.target.value)}
             onKeyDown={(e) => e.key === 'Enter' && handleAddTask()}
@@ -580,26 +621,46 @@ export function TaskList() {
             <div className="completed-header">
               <span>已完成 ({completedTasks.length})</span>
             </div>
-            {completedTasks.map((task) => (
-              <div
-                key={task.id}
-                className="task-item completed"
-                onClick={() => setActiveTask(task.id)}
-              >
-                <button
-                  className="task-checkbox completed"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    toggleTask(task.id);
-                  }}
+            {completedTasks.map((task) => {
+              const listInfo = getTaskListInfo(task);
+              return (
+                <div
+                  key={task.id}
+                  className="task-item completed"
+                  onClick={() => setActiveTask(task.id)}
                 >
-                  <span>✓</span>
-                </button>
-                <div className="task-content">
-                  <span className="task-title">{task.title}</span>
+                  <button
+                    className="task-checkbox completed"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      toggleTask(task.id);
+                    }}
+                  >
+                    <span>✓</span>
+                  </button>
+                  <div className="task-content">
+                    <span className="task-title">{task.title}</span>
+                    <div className="task-meta completed-meta">
+                      {/* 待办类型标签 */}
+                      <span className="task-list-badge">
+                        <span className="list-badge-dot" style={{ backgroundColor: listInfo.color }} />
+                        {listInfo.name}
+                      </span>
+                      {/* 完成时间 */}
+                      <span className="completed-at">
+                        ✓ {getCompletedAtLabel(task.updatedAt)}
+                      </span>
+                      {/* 截止日期（如有） */}
+                      {task.dueDate && (
+                        <span className="task-due-date" style={{ color: getDueDateColor(task.dueDate) }}>
+                          截止: {getDueDateLabel(task.dueDate)}
+                        </span>
+                      )}
+                    </div>
+                  </div>
                 </div>
-              </div>
-            ))}
+              );
+            })}
           </>
         )}
       </div>

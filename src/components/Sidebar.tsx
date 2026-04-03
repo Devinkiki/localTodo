@@ -58,8 +58,8 @@ export function Sidebar() {
 
       <div className="sidebar-section">
         <div className="section-header">
-          <h3>列表</h3>
-          <button className="icon-btn" onClick={() => setShowAddList(true)} title="添加列表">
+          <h3>待办类型</h3>
+          <button className="icon-btn" onClick={() => setShowAddList(true)} title="添加待办类型">
             <Plus size={16} />
           </button>
         </div>
@@ -95,10 +95,10 @@ export function Sidebar() {
       {showAddList && (
         <div className="add-list-modal">
           <div className="add-list-content">
-            <h3>新建列表</h3>
+            <h3>新建待办类型</h3>
             <input
               type="text"
-              placeholder="列表名称"
+              placeholder="待办类型名称"
               value={newListName}
               onChange={(e) => setNewListName(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && handleAddList()}

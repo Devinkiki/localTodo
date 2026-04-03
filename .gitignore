@@ -12,6 +12,9 @@ dist
 dist-ssr
 *.local
 
+# 发布包（需手动生成）
+release/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
