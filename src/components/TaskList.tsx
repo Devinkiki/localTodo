@@ -1,5 +1,5 @@
 import { useStore } from '../store/useStore';
-import { Star, Calendar, Sun, ArrowRightCircle, GripVertical } from 'lucide-react';
+import { Star, CalendarClock, Sunrise, ArrowRightCircle, GripVertical } from 'lucide-react';
 import { useState, useRef } from 'react';
 
 export function TaskList() {
@@ -458,7 +458,7 @@ export function TaskList() {
               }}
               title="设置日期"
             >
-              <Calendar size={16} />
+              <CalendarClock size={16} />
             </button>
             {datePickerTaskId === task.id && (
               <div className="date-picker-popup" onClick={(e) => e.stopPropagation()}>
@@ -510,7 +510,7 @@ export function TaskList() {
             onClick={() => handleToggleMyDay(task.id)}
             title={task.myDay ? '从我的一天中移除' : '添加到我的一天'}
           >
-            <Sun size={16} fill={task.myDay ? 'var(--accent-blue)' : 'none'} color="var(--accent-blue)" />
+            <Sunrise size={16} fill={task.myDay ? 'var(--accent-blue)' : 'none'} color="var(--accent-blue)" />
           </button>
           {showMoveMenu && (
             <div className="move-task-wrapper">
