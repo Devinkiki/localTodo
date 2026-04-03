@@ -1,9 +1,10 @@
 import { create } from 'zustand';
 import { v4 as uuidv4 } from 'uuid';
 import { formatISO, startOfDay } from 'date-fns';
-import type { Task, TodoList, FilterType } from '../types';
+import type { Task, TodoList, FilterType, ThemeMode } from '../types';
 
 const STORAGE_KEY = 'local-todo-data';
+const THEME_KEY = 'local-todo-theme';
 
 interface StoreState {
   tasks: Task[];
@@ -38,6 +39,10 @@ interface StoreState {
 
   // Data persistence
   resetMyDay: () => void;
+
+  // Theme
+  theme: ThemeMode;
+  setTheme: (theme: ThemeMode) => void;
 }
 
 function loadState() {
@@ -69,11 +74,50 @@ function saveState(state: Partial<StoreState>) {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
 }
 
+/**
+ * 获取系统主题偏好
+ */
+function getSystemThemePreference(): 'light' | 'dark' {
+  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+}
+
+/**
+ * 应用主题到 DOM
+ */
+function applyThemeToDOM(theme: ThemeMode) {
+  const effectiveTheme = theme === 'system' ? getSystemThemePreference() : theme;
+  document.documentElement.setAttribute('data-theme', effectiveTheme);
+}
+
+/**
+ * 加载主题设置
+ */
+function loadTheme(): ThemeMode {
+  try {
+    const raw = localStorage.getItem(THEME_KEY);
+    if (raw && ['light', 'dark', 'system'].includes(raw)) {
+      return raw as ThemeMode;
+    }
+  } catch {
+    // ignore
+  }
+  return 'system';
+}
+
+/**
+ * 保存主题设置
+ */
+function saveTheme(theme: ThemeMode) {
+  localStorage.setItem(THEME_KEY, theme);
+}
+
 const DEFAULT_LIST_ID = 'default-list';
 const MEETING_LIST_ID = 'meeting-list';
 
 export const useStore = create<StoreState>((set) => {
   const saved = loadState();
+  const initialTheme = loadTheme();
+  applyThemeToDOM(initialTheme);
 
   const initialState = {
     tasks: saved?.tasks || [],
@@ -85,6 +129,7 @@ export const useStore = create<StoreState>((set) => {
     activeFilter: 'all' as FilterType,
     activeTaskId: null,
     searchQuery: '',
+    theme: initialTheme,
   };
 
   // 为旧数据兼容：缺失 order 字段的任务自动补上
@@ -281,6 +326,12 @@ export const useStore = create<StoreState>((set) => {
           }),
         };
       });
+    },
+
+    setTheme: (theme: ThemeMode) => {
+      saveTheme(theme);
+      applyThemeToDOM(theme);
+      set({ theme });
     },
   };
 });

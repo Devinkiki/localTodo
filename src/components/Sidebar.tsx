@@ -1,16 +1,34 @@
 import { useState } from 'react';
 import { useStore } from '../store/useStore';
-import { Plus, Star, Calendar, CheckCheck, Trash2 } from 'lucide-react';
+import { Plus, Star, Calendar, CheckCheck, Trash2, Sun, Moon, Monitor } from 'lucide-react';
 import { ExportButton } from './ExportButton';
 import { ImportButton } from './ImportButton';
+import type { ThemeMode } from '../types';
 
 const LIST_COLORS = ['#4C8AFF', '#FF6B6B', '#51CF66', '#FFD43B', '#CC5DE8', '#FF922B', '#20C997'];
 
 export function Sidebar() {
-  const { lists, activeListId, activeFilter, addList, deleteList, setActiveList, setFilter } = useStore();
+  const { lists, activeListId, activeFilter, addList, deleteList, setActiveList, setFilter, theme, setTheme } = useStore();
   const [showAddList, setShowAddList] = useState(false);
   const [newListName, setNewListName] = useState('');
   const [newListColor, setNewListColor] = useState(LIST_COLORS[0]);
+
+  const cycleTheme = () => {
+    const next: Record<ThemeMode, ThemeMode> = { light: 'dark', dark: 'system', system: 'light' };
+    setTheme(next[theme]);
+  };
+
+  const getThemeIcon = () => {
+    if (theme === 'dark') return <Moon size={18} />;
+    if (theme === 'system') return <Monitor size={18} />;
+    return <Sun size={18} />;
+  };
+
+  const getThemeLabel = () => {
+    if (theme === 'dark') return '暗色主题';
+    if (theme === 'system') return '跟随系统';
+    return '浅色主题';
+  };
 
   const handleAddList = () => {
     if (newListName.trim()) {
@@ -53,6 +71,17 @@ export function Sidebar() {
           <span>所有待办</span>
         </button>
       </div>
+
+      <div className="sidebar-divider" />
+
+      <button
+        className="nav-item theme-toggle-btn"
+        onClick={cycleTheme}
+        title={`切换主题（当前：${getThemeLabel()}）`}
+      >
+        {getThemeIcon()}
+        <span>{getThemeLabel()}</span>
+      </button>
 
       <div className="sidebar-divider" />
 

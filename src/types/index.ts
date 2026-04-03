@@ -22,6 +22,8 @@ export interface TodoList {
 
 export type FilterType = 'all' | 'myDay' | 'important' | 'completed';
 
+export type ThemeMode = 'light' | 'dark' | 'system';
+
 export interface AppState {
   tasks: Task[];
   lists: TodoList[];
@@ -29,4 +31,5 @@ export interface AppState {
   activeFilter: FilterType;
   activeTaskId: string | null;
   searchQuery: string;
+  theme: ThemeMode;
 }

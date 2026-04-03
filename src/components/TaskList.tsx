@@ -52,7 +52,7 @@ export function TaskList() {
     return date.toLocaleDateString('zh-CN', { month: 'short', day: 'numeric' });
   };
 
-  const getDueDateColor = (dueDate: string | null) => {
+  const getDueDateColor = (dueDate: string | null): string => {
     if (!dueDate) return 'var(--text-secondary)';
     const date = new Date(dueDate);
     const today = new Date();
@@ -95,7 +95,7 @@ export function TaskList() {
     const list = lists.find((l) => l.id === task.listId);
     return {
       name: list?.name || '未知类型',
-      color: list?.color || '#999',
+      color: list?.color || 'var(--text-muted)',
     };
   };
 
@@ -362,11 +362,11 @@ export function TaskList() {
   };
 
   const getListColor = () => {
-    if (activeFilter === 'myDay') return '#4C8AFF';
-    if (activeFilter === 'important') return '#FFD43B';
-    if (activeFilter === 'all' && !activeListId) return '#6b6375';
+    if (activeFilter === 'myDay') return 'var(--accent-blue)';
+    if (activeFilter === 'important') return 'var(--accent-yellow)';
+    if (activeFilter === 'all' && !activeListId) return 'var(--text-secondary)';
     const list = lists.find((l) => l.id === activeListId);
-    return list?.color || '#4C8AFF';
+    return list?.color || 'var(--accent-blue)';
   };
 
   const handleToggleMyDay = (id: string) => {
@@ -447,7 +447,7 @@ export function TaskList() {
             onClick={() => handleToggleImportant(task.id)}
             title="标记重要"
           >
-            <Star size={16} fill={task.important ? '#FFD43B' : 'none'} color="#FFD43B" />
+            <Star size={16} fill={task.important ? 'var(--accent-yellow)' : 'none'} color="var(--accent-yellow)" />
           </button>
           <div className="date-picker-wrapper">
             <button
@@ -510,7 +510,7 @@ export function TaskList() {
             onClick={() => handleToggleMyDay(task.id)}
             title={task.myDay ? '从我的一天中移除' : '添加到我的一天'}
           >
-            <Sun size={16} fill={task.myDay ? '#4C8AFF' : 'none'} color="#4C8AFF" />
+            <Sun size={16} fill={task.myDay ? 'var(--accent-blue)' : 'none'} color="var(--accent-blue)" />
           </button>
           {showMoveMenu && (
             <div className="move-task-wrapper">
@@ -579,7 +579,7 @@ export function TaskList() {
                   <div className="task-group-header">
                     <span
                       className="task-group-dot"
-                      style={{ backgroundColor: list?.color || '#999' }}
+                      style={{ backgroundColor: list?.color || 'var(--text-muted)' }}
                     />
                     <span className="task-group-name">{groupName}</span>
                     <span className="task-group-count">{groupTasks.length}</span>

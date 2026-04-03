@@ -9,7 +9,7 @@ export function SearchBar() {
       <Search size={16} />
       <input
         type="text"
-        placeholder="搜索任务"
+        placeholder="搜索"
         value={searchQuery}
         onChange={(e) => setSearchQuery(e.target.value)}
       />
