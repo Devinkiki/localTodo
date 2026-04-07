@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { v4 as uuidv4 } from 'uuid';
 import { formatISO, startOfDay } from 'date-fns';
-import type { Task, TodoList, FilterType, ThemeMode } from '../types';
+import type { Task, TodoList, FilterType, ThemeMode, Notebook } from '../types';
 
 const STORAGE_KEY = 'local-todo-data';
 const THEME_KEY = 'local-todo-theme';
@@ -9,9 +9,11 @@ const THEME_KEY = 'local-todo-theme';
 interface StoreState {
   tasks: Task[];
   lists: TodoList[];
+  notebooks: Notebook[];
   activeListId: string | null;
   activeFilter: FilterType;
   activeTaskId: string | null;
+  activeNotebookId: string | null;
   searchQuery: string;
 
   // List actions
@@ -40,6 +42,12 @@ interface StoreState {
   // Data persistence
   resetMyDay: () => void;
 
+  // Notebook actions
+  addNotebook: (title: string) => void;
+  updateNotebook: (id: string, updates: Partial<Notebook>) => void;
+  deleteNotebook: (id: string) => void;
+  setActiveNotebook: (id: string | null) => void;
+
   // Theme
   theme: ThemeMode;
   setTheme: (theme: ThemeMode) => void;
@@ -54,7 +62,16 @@ function loadState() {
       const lastVisit = data.lastVisit;
       const today = formatISO(startOfDay(new Date()), { representation: 'date' });
       if (lastVisit !== today) {
-        data.tasks = (data.tasks || []).map((t: Task) => ({ ...t, myDay: false }));
+        // 每日重置 myDay 时，自动同步今天创建/到期的任务到"我的一天"
+        data.tasks = (data.tasks || []).map((t: Task) => {
+          const taskDay = t.createdAt ? formatISO(startOfDay(new Date(t.createdAt)), { representation: 'date' }) : null;
+          const dueDay = t.dueDate ? formatISO(startOfDay(new Date(t.dueDate)), { representation: 'date' }) : null;
+          // 今天创建或今天到期的任务，自动加入"我的一天"
+          if ((taskDay === today || dueDay === today) && !t.completed) {
+            return { ...t, myDay: true };
+          }
+          return { ...t, myDay: false };
+        });
         data.lastVisit = today;
       }
       return data;
@@ -69,6 +86,7 @@ function saveState(state: Partial<StoreState>) {
   const data = {
     tasks: state.tasks,
     lists: state.lists,
+    notebooks: state.notebooks,
     lastVisit: formatISO(startOfDay(new Date()), { representation: 'date' }),
   };
   localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
@@ -125,9 +143,11 @@ export const useStore = create<StoreState>((set) => {
       { id: DEFAULT_LIST_ID, name: '任务', color: '#4C8AFF', createdAt: new Date().toISOString() },
       { id: MEETING_LIST_ID, name: '会议', color: '#FF922B', createdAt: new Date().toISOString() },
     ],
+    notebooks: saved?.notebooks || [],
     activeListId: saved?.lists?.[0]?.id || DEFAULT_LIST_ID,
     activeFilter: 'all' as FilterType,
     activeTaskId: null,
+    activeNotebookId: null,
     searchQuery: '',
     theme: initialTheme,
   };
@@ -326,6 +346,45 @@ export const useStore = create<StoreState>((set) => {
           }),
         };
       });
+    },
+
+    /**
+     * 记事本 CRUD
+     */
+    addNotebook: (title: string) => {
+      updateAndSave((state) => {
+        const now = new Date().toISOString();
+        const newNotebook: Notebook = {
+          id: uuidv4(),
+          title,
+          content: '',
+          createdAt: now,
+          updatedAt: now,
+        };
+        return {
+          notebooks: [...state.notebooks, newNotebook],
+          activeNotebookId: newNotebook.id,
+        };
+      });
+    },
+
+    updateNotebook: (id: string, updates: Partial<Notebook>) => {
+      updateAndSave((state) => ({
+        notebooks: state.notebooks.map((n) =>
+          n.id === id ? { ...n, ...updates, updatedAt: new Date().toISOString() } : n
+        ),
+      }));
+    },
+
+    deleteNotebook: (id: string) => {
+      updateAndSave((state) => ({
+        notebooks: state.notebooks.filter((n) => n.id !== id),
+        activeNotebookId: state.activeNotebookId === id ? null : state.activeNotebookId,
+      }));
+    },
+
+    setActiveNotebook: (id: string | null) => {
+      set({ activeNotebookId: id, activeFilter: 'notebook' });
     },
 
     setTheme: (theme: ThemeMode) => {

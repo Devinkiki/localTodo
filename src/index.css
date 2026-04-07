@@ -1748,3 +1748,315 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: var(--scrollbar-thumb-hover);
 }
+
+/* ===== Notebook View ===== */
+.notebook-mode {
+  flex-direction: row !important;
+}
+
+.notebook-view {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* Notebook sidebar */
+.notebook-sidebar {
+  width: 220px;
+  min-width: 220px;
+  background: var(--sidebar-bg);
+  border-right: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.notebook-sidebar-header {
+  padding: 16px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.notebook-back-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 12px;
+  border: none;
+  background: transparent;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--text-secondary);
+  transition: all 0.15s;
+  width: 100%;
+  text-align: left;
+}
+
+.notebook-back-btn:hover {
+  background: var(--hover-bg);
+  color: var(--text-primary);
+}
+
+.notebook-list {
+  flex: 1;
+  overflow-y: auto;
+  padding: 8px;
+}
+
+.notebook-empty {
+  padding: 24px 12px;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: 13px;
+}
+
+.notebook-empty p {
+  font-weight: 500;
+  margin-bottom: 4px;
+  color: var(--text-secondary);
+}
+
+.notebook-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-size: 14px;
+  color: var(--text-primary);
+  position: relative;
+}
+
+.notebook-item:hover {
+  background: var(--hover-bg);
+}
+
+.notebook-item.active {
+  background: var(--active-bg);
+  font-weight: 500;
+}
+
+.notebook-title {
+  flex: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.notebook-actions {
+  display: flex;
+  gap: 2px;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+
+.notebook-item:hover .notebook-actions {
+  opacity: 1;
+}
+
+.notebook-action-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  border: none;
+  background: transparent;
+  border-radius: 4px;
+  cursor: pointer;
+  color: var(--text-muted);
+  transition: all 0.15s;
+}
+
+.notebook-action-btn:hover {
+  background: var(--active-bg);
+  color: var(--text-primary);
+}
+
+.notebook-action-btn.notebook-delete:hover {
+  color: var(--accent-red);
+}
+
+/* Notebook inline edit mode */
+.notebook-edit-mode {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  width: 100%;
+}
+
+.notebook-edit-input {
+  flex: 1;
+  padding: 4px 8px;
+  border: 1px solid var(--accent-blue);
+  border-radius: 4px;
+  font-size: 13px;
+  outline: none;
+  background: var(--main-bg);
+  color: var(--text-primary);
+}
+
+.notebook-edit-confirm,
+.notebook-edit-cancel {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px;
+  border: none;
+  background: transparent;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.notebook-edit-confirm {
+  color: var(--accent-green);
+}
+
+.notebook-edit-confirm:hover {
+  background: var(--hover-bg);
+}
+
+.notebook-edit-cancel {
+  color: var(--text-muted);
+}
+
+.notebook-edit-cancel:hover {
+  background: var(--hover-bg);
+}
+
+/* Add notebook button */
+.notebook-add-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 16px;
+  border: none;
+  border-top: 1px solid var(--border-color);
+  background: transparent;
+  cursor: pointer;
+  font-size: 13px;
+  color: var(--accent-blue);
+  transition: all 0.15s;
+  width: 100%;
+  text-align: left;
+}
+
+.notebook-add-btn:hover {
+  background: var(--hover-bg);
+}
+
+/* New notebook input */
+.notebook-new-input {
+  padding: 12px;
+  border-top: 1px solid var(--border-color);
+}
+
+.notebook-new-input input {
+  width: 100%;
+  padding: 8px 10px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  font-size: 13px;
+  outline: none;
+  background: var(--main-bg);
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+
+.notebook-new-input input:focus {
+  border-color: var(--accent-blue);
+}
+
+.notebook-new-actions {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.notebook-confirm-btn {
+  padding: 6px 14px;
+  border: none;
+  background: var(--accent-blue);
+  color: white;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.notebook-confirm-btn:hover {
+  opacity: 0.9;
+}
+
+.notebook-cancel-btn {
+  padding: 6px 14px;
+  border: 1px solid var(--border-color);
+  background: transparent;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+.notebook-cancel-btn:hover {
+  background: var(--hover-bg);
+}
+
+/* Notebook editor area */
+.notebook-editor {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background: var(--main-bg);
+}
+
+.notebook-editor-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  border-bottom: 1px solid var(--border-color);
+  flex-shrink: 0;
+}
+
+.notebook-editor-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.notebook-editor-updated {
+  font-size: 12px;
+  color: var(--text-muted);
+}
+
+.notebook-md-editor {
+  flex: 1;
+  overflow: hidden;
+}
+
+.notebook-md-editor .w-md-editor {
+  border: none !important;
+  border-radius: 0 !important;
+}
+
+/* Notebook editor empty state */
+.notebook-editor-empty {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  font-size: 14px;
+  gap: 8px;
+}
+
+.notebook-editor-empty p {
+  font-weight: 500;
+  color: var(--text-secondary);
+}

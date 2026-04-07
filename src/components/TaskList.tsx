@@ -434,7 +434,7 @@ export function TaskList() {
         <div className="task-content">
           <span className="task-title">{task.title}</span>
           <div className="task-meta">
-            {task.dueDate && (
+            {task.dueDate && !task.completed && (
               <span className="task-due-date" style={{ color: getDueDateColor(task.dueDate) }}>
                 {getDueDateLabel(task.dueDate)}
               </span>
@@ -650,8 +650,8 @@ export function TaskList() {
                       <span className="completed-at">
                         ✓ {getCompletedAtLabel(task.updatedAt)}
                       </span>
-                      {/* 截止日期（如有） */}
-                      {task.dueDate && (
+                      {/* 截止日期（如有，已完成任务不显示） */}
+                      {task.dueDate && !task.completed && (
                         <span className="task-due-date" style={{ color: getDueDateColor(task.dueDate) }}>
                           截止: {getDueDateLabel(task.dueDate)}
                         </span>

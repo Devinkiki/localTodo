@@ -3,6 +3,7 @@ import { Sidebar } from './components/Sidebar';
 import { TaskList } from './components/TaskList';
 import { TaskDetail } from './components/TaskDetail';
 import { SearchBar } from './components/SearchBar';
+import { NotebookView } from './components/NotebookView';
 import { useStore } from './store/useStore';
 
 function App() {
@@ -20,6 +21,19 @@ function App() {
     mediaQuery.addEventListener('change', handleChange);
     return () => mediaQuery.removeEventListener('change', handleChange);
   }, [theme, setTheme]);
+
+  // 记事本视图：替换主内容区域
+  if (activeFilter === 'notebook') {
+    return (
+      <div className="app">
+        <Sidebar />
+        <div className="main-content notebook-mode">
+          <NotebookView />
+        </div>
+        {activeTaskId && <TaskDetail />}
+      </div>
+    );
+  }
 
   return (
     <div className="app">

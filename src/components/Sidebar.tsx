@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useStore } from '../store/useStore';
-import { Plus, Star, Calendar, CheckCheck, Trash2, Sun, Moon, Monitor } from 'lucide-react';
+import { Plus, Star, Calendar, CheckCheck, Trash2, Sun, Moon, Monitor, NotebookPen } from 'lucide-react';
 import { ExportButton } from './ExportButton';
 import { ImportButton } from './ImportButton';
 import type { ThemeMode } from '../types';
@@ -8,7 +8,7 @@ import type { ThemeMode } from '../types';
 const LIST_COLORS = ['#4C8AFF', '#FF6B6B', '#51CF66', '#FFD43B', '#CC5DE8', '#FF922B', '#20C997'];
 
 export function Sidebar() {
-  const { lists, activeListId, activeFilter, addList, deleteList, setActiveList, setFilter, theme, setTheme } = useStore();
+  const { lists, activeListId, activeFilter, addList, deleteList, setActiveList, setFilter, theme, setTheme, notebooks, setActiveNotebook } = useStore();
   const [showAddList, setShowAddList] = useState(false);
   const [newListName, setNewListName] = useState('');
   const [newListColor, setNewListColor] = useState(LIST_COLORS[0]);
@@ -69,6 +69,19 @@ export function Sidebar() {
         >
           <CheckCheck size={18} />
           <span>所有待办</span>
+        </button>
+        <button
+          className={`nav-item ${activeFilter === 'notebook' ? 'active' : ''}`}
+          onClick={() => {
+            if (notebooks.length > 0) {
+              setActiveNotebook(notebooks[0].id);
+            } else {
+              setFilter('notebook');
+            }
+          }}
+        >
+          <NotebookPen size={18} />
+          <span>记事本</span>
         </button>
       </div>
 

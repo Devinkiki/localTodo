@@ -20,7 +20,16 @@ export interface TodoList {
   createdAt: string;
 }
 
-export type FilterType = 'all' | 'myDay' | 'important' | 'completed';
+/** 记事本实体 */
+export interface Notebook {
+  id: string;
+  title: string;
+  content: string; // Markdown 内容
+  createdAt: string;
+  updatedAt: string;
+}
+
+export type FilterType = 'all' | 'myDay' | 'important' | 'completed' | 'notebook';
 
 export type ThemeMode = 'light' | 'dark' | 'system';
 
