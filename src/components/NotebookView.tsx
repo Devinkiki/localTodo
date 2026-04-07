@@ -79,7 +79,6 @@ export function NotebookView() {
   // 返回全部待办
   const handleBackToAll = () => {
     setFilter('all');
-    setActiveNotebook(null);
   };
 
   return (

@@ -68,7 +68,7 @@ export function Sidebar() {
           onClick={() => { setFilter('all'); setActiveList(null); }}
         >
           <CheckCheck size={18} />
-          <span>所有待办</span>
+          <span>全部待办</span>
         </button>
         <button
           className={`nav-item ${activeFilter === 'notebook' ? 'active' : ''}`}

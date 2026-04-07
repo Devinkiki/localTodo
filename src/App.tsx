@@ -7,7 +7,7 @@ import { NotebookView } from './components/NotebookView';
 import { useStore } from './store/useStore';
 
 function App() {
-  const { activeTaskId, activeFilter, theme, setTheme } = useStore();
+  const { activeTaskId, activeFilter, activeListId, theme, setTheme } = useStore();
 
   // 监听系统主题变化
   useEffect(() => {
@@ -28,7 +28,9 @@ function App() {
       <div className="app">
         <Sidebar />
         <div className="main-content notebook-mode">
-          <NotebookView />
+          <div key="notebook" className="content-wrapper">
+            <NotebookView />
+          </div>
         </div>
         {activeTaskId && <TaskDetail />}
       </div>
@@ -40,7 +42,7 @@ function App() {
       <Sidebar />
       <div className="main-content">
         <SearchBar />
-        <div key={activeFilter} className="content-wrapper">
+        <div key={`${activeFilter}-${activeListId}`} className="content-wrapper">
           <TaskList />
         </div>
       </div>

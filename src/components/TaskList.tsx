@@ -356,7 +356,7 @@ export function TaskList() {
   const getListName = () => {
     if (activeFilter === 'myDay') return '我的一天';
     if (activeFilter === 'important') return '重要待办';
-    if (activeFilter === 'all' && !activeListId) return '所有待办';
+    if (activeFilter === 'all' && !activeListId) return '全部待办';
     const list = lists.find((l) => l.id === activeListId);
     return list?.name || '任务';
   };
